@@ -1,7 +1,7 @@
 let getStudents = (req, res) => {
 	res.status(200).json({
 		status: "success",
-		data: "got all students",
+		data:  Date.now() - req.startTime,
 	});
 };
 let addNewStudent = (req, res) => {

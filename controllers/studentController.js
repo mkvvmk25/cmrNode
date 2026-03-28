@@ -1,4 +1,5 @@
 let pool = require("./../db.js");
+let bcrypt = require("bcrypt");
 let getStudents = async (req, res) => {
 	let k = req.query.val;
 
@@ -18,13 +19,23 @@ let getStudents = async (req, res) => {
 // a1b2c3e1@123
 // abbccce@123
 
-let addNewStudent = (req, res) => {
+let addNewStudent = async (req, res) => {
 	console.log(req.body);
-	
+	let em = req.body.email;
+	let pass = req.body.password;
+
+	let hashpass = await bcrypt.hash(pass, 10);
+
+	let ins = await pool.query(
+		`insert into users (email, password) values (?,?)`,
+		[em, hashpass],
+	);
+	console.log(ins);
+
 	res.status(201);
 	res.json({
 		status: "success",
-		data: "student has signed up",
+		data: ins,
 	});
 };
 

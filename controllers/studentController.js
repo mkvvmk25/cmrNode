@@ -1,9 +1,18 @@
-let getStudents = (req, res) => {
+let pool = require("./../db.js");
+let getStudents = async (req, res) => {
+	let ans = await pool.query("show databases");
+	console.log();
+	ans = ans[0];
+	console.log(req);
+	
+	
 	res.status(200).json({
 		status: "success",
-		data:  Date.now() - req.startTime,
+		data: ans,
+		param:req.query
 	});
 };
+
 let addNewStudent = (req, res) => {
 	res.status(201);
 	res.json({
@@ -19,4 +28,4 @@ let getLAST5 = (req, res) => {
 	res.end("hi");
 };
 
-module.exports = { getStudents, getTOP10Students, getLAST5 };
+module.exports = { getStudents, getTOP10Students, getLAST5, addNewStudent };

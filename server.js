@@ -1,10 +1,9 @@
 // server.js
 let app = require("./app.js");
 
-
-
-app.listen(3004, "localhost", (err) => {
+let port = 3004;
+app.listen(port, "localhost", (err) => {
 	if (err) {
 		console.log(err.message);
-	} else console.log("run");
+	} else console.log("running on port " + port);
 });

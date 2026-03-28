@@ -3,9 +3,10 @@ let express = require("express");
 // let studentController = require("./controllers/studentController")
 let studentRouter = require("./routes/studentRoute");
 
-let app = express();   // 
+let app = express();   //
 
 // /students/all
+app.use(express.json());
 app.use(
 	(req, res, next) => {
 	req.startTime = Date.now();

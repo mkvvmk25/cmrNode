@@ -1,7 +1,9 @@
 // server.js
+let dotenv = require("dotenv");
+dotenv.config();
 let app = require("./app.js");
 
-let port = 3004;
+let port = process.env.PORT;
 app.listen(port, "localhost", (err) => {
 	if (err) {
 		console.log(err.message);

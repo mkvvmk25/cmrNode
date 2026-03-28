@@ -1,5 +1,6 @@
 let pool = require("./../db.js");
 let bcrypt = require("bcrypt");
+let jwt = require("jsonwebtoken");
 let getStudents = async (req, res) => {
 	let k = req.query.val;
 
@@ -18,6 +19,13 @@ let getStudents = async (req, res) => {
 };
 // a1b2c3e1@123
 // abbccce@123
+
+let genearateToken = (payload) => {
+	let token = jwt.sign(payload, process.env.JWT_SECRET, {
+		expiresIn: "5m",
+	});
+	return token;
+};
 
 let login = async (req, res) => {
 	let email = req.body.email;
@@ -43,8 +51,15 @@ let login = async (req, res) => {
 		});
 		// return;
 	}
+	// generate jwt token and send to client
 
-	res.json({ data: isMatch });
+	let token = genearateToken({ id: user.id });
+
+	res.status(200).json({
+		status: "success",
+		jwttoken: token,
+		user:user
+	})
 };
 
 let addNewStudent = async (req, res) => {

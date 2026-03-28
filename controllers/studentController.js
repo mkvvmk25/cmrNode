@@ -19,6 +19,34 @@ let getStudents = async (req, res) => {
 // a1b2c3e1@123
 // abbccce@123
 
+let login = async (req, res) => {
+	let email = req.body.email;
+	let pass = req.body.password;
+
+	let [row] = await pool.query("select * from users where email=?", [email]);
+
+	if (row.length == 0) {
+		res.status(401).json({
+			status: "fail",
+			message: "no user found",
+		});
+		return;
+	}
+
+	let user = row[0];
+
+	let isMatch = await bcrypt.compare(pass, user.password);
+	if (!isMatch) {
+		res.status(401).json({
+			status: "fail",
+			message: "invalid pass",
+		});
+		// return;
+	}
+
+	res.json({ data: isMatch });
+};
+
 let addNewStudent = async (req, res) => {
 	console.log(req.body);
 	let em = req.body.email;
@@ -30,6 +58,7 @@ let addNewStudent = async (req, res) => {
 		`insert into users (email, password) values (?,?)`,
 		[em, hashpass],
 	);
+
 	console.log(ins);
 
 	res.status(201);
@@ -46,4 +75,10 @@ let getLAST5 = (req, res) => {
 	res.end("hi");
 };
 
-module.exports = { getStudents, getTOP10Students, getLAST5, addNewStudent };
+module.exports = {
+	getStudents,
+	getTOP10Students,
+	getLAST5,
+	addNewStudent,
+	login,
+};

@@ -4,6 +4,7 @@ let studentController = require("./../controllers/studentController");
 
 router.get("/all", studentController.getStudents);
 router.post("/signup", studentController.addNewStudent);
+router.post("/login", studentController.login);
 // router.get("/top10", studentController.getTOP10Students);
 
 module.exports = router;
